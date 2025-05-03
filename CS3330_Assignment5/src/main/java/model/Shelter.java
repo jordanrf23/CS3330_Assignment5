@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Shelter<T extends Pet>{
 	private final List<T> pets;
-	private static int idCounter = 1;
 	
 	/*
 	 * Aligning pets into a new list
@@ -64,8 +64,12 @@ public class Shelter<T extends Pet>{
 	/*
 	 * sorts with comparable 
 	 */
-	public void sort (Comparator<T> comparator) {
+	public void sortPets(Comparator<T> comparator) {
 		pets.sort(comparator);
+	}
+	
+	public void sortPets() {
+		Collections.sort(pets);
 	}
 	
 	/*
@@ -75,15 +79,14 @@ public class Shelter<T extends Pet>{
 		return new ArrayList<>(pets);
 	}
 	
+	public List<T> getAvailablePets(){
+		return pets.stream().filter(p-> !p.isAdopted()).collect(Collectors.toList());
+	}
+	
 	/*
 	 * clears all the pets
 	 */
 	public void clear() {
 		pets.clear();
 	}
-
-	public static int getNextId() {
-		return idCounter++;
-	}
-
 }
