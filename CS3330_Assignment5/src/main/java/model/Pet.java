@@ -107,7 +107,6 @@ public abstract class Pet implements Comparable<Pet> {
 		this.age = age;
 	}
 
-
 	
 	/*
 	 * returns the adoption method to alert the user of the pets status
