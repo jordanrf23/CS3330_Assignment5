@@ -1,38 +1,38 @@
 package model;
 
 public abstract class Pet implements Comparable<Pet> {
-	protected int uniqueId;
-	protected String animalName;
-	protected String category;
-	protected String subSpecies;
-	protected int yearsOld;
+	protected int id;
+	protected String name;
+	protected String type;
+	protected String species;
+	protected int age;
 	protected boolean adopted;
 	
 	/*
 	 * connects the attributes for Pet 
 	 */
-	public Pet(int uniqueId, String animalName, String category, String subSpecies, int yearsOld, boolean adopted) {
+	public Pet(int id, String name, String type, String species, int age, boolean adopted) {
 		super();
-		this.uniqueId = uniqueId;
-		this.animalName = animalName;
-		this.category = category;
-		this.subSpecies = subSpecies;
-		this.yearsOld = yearsOld;
+		this.id = id;
+		this.name = name;
+		this.type = type;
+		this.species = species;
+		this.age = age;
 		this.adopted = adopted;
 	}
 
 	/*
 	 * obtains the Id
 	 */
-	public int getUniqueId() {
-		return uniqueId;
+	public int getId() {
+		return id;
 	}
 
 	/*
 	 * assigns the Id
 	 */
-	public void setUniqueId(int uniqueId) {
-		this.uniqueId = uniqueId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 
@@ -40,8 +40,8 @@ public abstract class Pet implements Comparable<Pet> {
 	/*
 	 * obtains the name 
 	 */
-	public String getAnimalName() {
-		return animalName;
+	public String getName() {
+		return name;
 	}
 
 
@@ -49,8 +49,8 @@ public abstract class Pet implements Comparable<Pet> {
 	/*
 	 * assigns the animal's name
 	 */
-	public void setAnimalName(String animalName) {
-		this.animalName = animalName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 
@@ -58,8 +58,8 @@ public abstract class Pet implements Comparable<Pet> {
 	/*
 	 * obtains the category for the animal
 	 */
-	public String getCategory() {
-		return category;
+	public String getType() {
+		return type;
 	}
 
 
@@ -67,8 +67,8 @@ public abstract class Pet implements Comparable<Pet> {
 	/*
 	 * assigns the category for the animal
 	 */
-	public void setCategory(String category) {
-		this.category = category;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 
@@ -76,8 +76,8 @@ public abstract class Pet implements Comparable<Pet> {
 	/*
 	 * obtains the sub species 
 	 */
-	public String getSubSpecies() {
-		return subSpecies;
+	public String getspecies() {
+		return species;
 	}
 
 
@@ -85,8 +85,8 @@ public abstract class Pet implements Comparable<Pet> {
 	/*
 	 * assigns the sub species to the animal
 	 */
-	public void setSubSpecies(String subSpecies) {
-		this.subSpecies = subSpecies;
+	public void setSpecies(String species) {
+		this.species = species;
 	}
 
 
@@ -94,8 +94,8 @@ public abstract class Pet implements Comparable<Pet> {
 	/*
 	 * obtains the age for the animal
 	 */
-	public int getYearsOld() {
-		return yearsOld;
+	public int getAge() {
+		return age;
 	}
 
 
@@ -103,8 +103,8 @@ public abstract class Pet implements Comparable<Pet> {
 	/*
 	 * assigns the age to the animal
 	 */
-	public void setYearsOld(int yearsOld) {
-		this.yearsOld = yearsOld;
+	public void setAge(int age) {
+		this.age = age;
 	}
 
 
@@ -140,7 +140,7 @@ public abstract class Pet implements Comparable<Pet> {
 	 */
 	@Override
 	public int compareTo(Pet o) {
-		return this.animalName.compareToIgnoreCase(o.animalName);
+		return this.name.compareToIgnoreCase(o.name);
 	}
 
 	/*
@@ -148,6 +148,6 @@ public abstract class Pet implements Comparable<Pet> {
 	 */
 	@Override
 	public String toString() {
-		return String.format("%s (ID: %d, Age: %d, Category: %s, SubSpecies: %s, Adopted: %b ", animalName, uniqueId, yearsOld, category, subSpecies, adopted );
+		return String.format("%s (ID: %d, Age: %d, Category: %s, SubSpecies: %s, Adopted: %b ", name, id, age, type, species, adopted );
 	}
 }
