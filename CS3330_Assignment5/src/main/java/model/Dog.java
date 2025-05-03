@@ -9,7 +9,6 @@ public class Dog extends Pet{
 	 */
 	public Dog(int id, String name, int age, boolean adopted, String breed) {
 		super(id, name, "Dog", breed, age, adopted);
-		// TODO Auto-generated constructor stub
 		this.breed = breed;
 	}
 	

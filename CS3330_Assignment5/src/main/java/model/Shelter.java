@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Shelter<T extends Pet>{
 	private final List<T> pets;
+	private static int idCounter = 1;
 	
 	/*
 	 * Aligning pets into a new list
@@ -79,6 +80,10 @@ public class Shelter<T extends Pet>{
 	 */
 	public void clear() {
 		pets.clear();
+	}
+
+	public static int getNextId() {
+		return idCounter++;
 	}
 
 }
