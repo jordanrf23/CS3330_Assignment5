@@ -20,7 +20,9 @@ public class PetLoader {
 	
 	private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-	
+	/*
+	 * loads the pet json when first ran
+	 */
 	public static List<Pet> loadPets(File file) throws IOException {
         List<Pet> pets = new ArrayList<>();
         try (Reader reader = new FileReader(file)) {
@@ -54,6 +56,9 @@ public class PetLoader {
         return pets;
     }
 	
+	/*
+	 * loads in the exotic json file when first ran
+	 */
 	public static List<Pet> loadExoticPets(File file) throws IOException {
         List<Pet> pets = new ArrayList<>();
         try (Reader reader = new FileReader(file)) {
