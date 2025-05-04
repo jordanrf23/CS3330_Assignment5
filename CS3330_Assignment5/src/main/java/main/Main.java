@@ -33,7 +33,6 @@ public class Main {
 		            	pets.addAll(PetLoader.loadExoticPets(exoticFile));
 		                
 		                
-		               //pets.addAll(PetLoader.loadExoticPets(new File(Main.class.getResource("/exotic_animals.json").getFile())));
 
 		                // Create model, view, and controller
 		                Shelter<Pet> shelter = new Shelter<>();

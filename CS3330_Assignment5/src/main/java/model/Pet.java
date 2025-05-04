@@ -1,7 +1,7 @@
 package model;
 
 public abstract class Pet implements Comparable<Pet> {
-	protected int id;
+	protected String id;
 	protected String name;
 	protected String type;
 	protected String species;
@@ -11,7 +11,7 @@ public abstract class Pet implements Comparable<Pet> {
 	/*
 	 * connects the attributes for Pet 
 	 */
-	public Pet(int id, String name, String type, String species, int age, boolean adopted) {
+	public Pet(String id, String name, String type, String species, int age, boolean adopted) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -24,14 +24,14 @@ public abstract class Pet implements Comparable<Pet> {
 	/*
 	 * obtains the Id
 	 */
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
 	/*
 	 * assigns the Id
 	 */
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

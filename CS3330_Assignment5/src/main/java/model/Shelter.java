@@ -32,14 +32,14 @@ public class Shelter<T extends Pet>{
 	/*
 	 * removes pet by using their id 
 	 */
-	public boolean removePetById(int id) {
+	public boolean removePetById(String id) {
 		return pets.removeIf(p-> p.getId() == id);
 	}
 	
 	/*
 	 * obtains a pet by their id 
 	 */
-	public T getPetById(int id) {
+	public T getPetById(String id) {
 		for(T pet: pets) {
 			if(pet.getId() == id) {
 				return pet;
@@ -96,13 +96,18 @@ public class Shelter<T extends Pet>{
 		pets.clear();
 	}
 	
-	public int generateNextId() {
-	    int maxId = 0;
-	    for (Pet pet : pets) { // assuming pets is your List<Pet>
-	        if (pet.getId() > maxId) {
-	            maxId = pet.getId();
+	public String generateNextId() {
+		int maxId = 0;
+	    for (Pet pet : pets) {
+	        try {
+	            int id = Integer.parseInt(pet.getId());
+	            if (id > maxId) {
+	                maxId = id;
+	            }
+	        } catch (NumberFormatException e) {
+	            // Skip non-numeric IDs
 	        }
 	    }
-	    return maxId + 1;
+	    return String.valueOf(maxId + 1);
 	}
 }

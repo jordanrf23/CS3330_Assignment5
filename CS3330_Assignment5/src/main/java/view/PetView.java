@@ -17,10 +17,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import model.Cat;
-import model.Dog;
+
 import model.Pet;
-import model.Rabbit;
 import model.Shelter;
 
 public class PetView  extends JFrame{
@@ -79,9 +77,7 @@ public class PetView  extends JFrame{
         add(tableScroll, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
         
-        JButton jButton = new JButton();
-		JButton jButton2 = new JButton();
-		jButton2.addActionListener(e -> {
+		addButton.addActionListener(e -> {
             JTextField nameField = new JTextField();
             JTextField ageField = new JTextField();
             JComboBox<String> speciesBox = new JComboBox<>(new String[]{"Dog", "Cat", "Rabbit"});
@@ -119,7 +115,7 @@ public class PetView  extends JFrame{
                 }
                 
                 Shelter<Pet> shelter = new Shelter<>();
-                int id = shelter.generateNextId();
+                String id = shelter.generateNextId();
                 boolean adopted = false;
 
                 // Create the Pet object according to species
@@ -203,9 +199,13 @@ public class PetView  extends JFrame{
     }
 	
 	public Pet getSelectedPet() {
-        int row = petTable.getSelectedRow();
-        if (row == -1) return null;
-        return currentPets.get(row);
+	    int row = petTable.getSelectedRow();
+	    if (row == -1) return null;
+	    String id = (String) tableModel.getValueAt(row, 0); // ID is now a String
+	    for (Pet pet : currentPets) {
+	        if (pet.getId().equals(id)) return pet;
+	    }
+	    return null;
     }
 
 }

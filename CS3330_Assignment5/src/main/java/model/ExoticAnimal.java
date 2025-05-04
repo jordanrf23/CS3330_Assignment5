@@ -1,6 +1,7 @@
 package model;
 
 public class ExoticAnimal {
+	private String uniqueId;
 	private String animalName;
 	private int yearsOld;
 	private String animalType;
@@ -13,6 +14,12 @@ public class ExoticAnimal {
 		this.animalType = animalType;
 		this.isAdopted = isAdopted;
 	}
+	
+
+	public String getUniqueId() {
+		return uniqueId;
+	}
+
 
 	public String getAnimalName() {
 		return animalName;
@@ -33,5 +40,6 @@ public class ExoticAnimal {
 	public void markAsAdopted() {
 		this.isAdopted = true;
 	}
+
 
 }

@@ -27,7 +27,7 @@ public class PetLoader {
             JsonArray jsonArray = JsonParser.parseReader(reader).getAsJsonArray();
             for (JsonElement element : jsonArray) {
                 JsonObject obj = element.getAsJsonObject();
-                int id = obj.get("id").getAsInt();
+                String id = obj.get("id").getAsString();
                 String species = obj.get("species").getAsString();
                 String type = obj.get("type").getAsString();
                 String name = obj.get("name").getAsString();
@@ -60,7 +60,7 @@ public class PetLoader {
             Type listType = new TypeToken<List<ExoticAnimal>>(){}.getType();
             List<ExoticAnimal> exoticAnimals = gson.fromJson(reader, listType);
             for (ExoticAnimal exotic : exoticAnimals) {
-                pets.add(new ExoticAnimalAdapter(0, exotic));
+                pets.add(new ExoticAnimalAdapter(exotic.getUniqueId(), exotic));
             }
         }
         return pets;
