@@ -15,6 +15,9 @@ public class PetController {
 	private final Shelter<Pet> shelter;
     private final PetView view;
 
+    /*
+     * recognizing the shelter and view classes
+     */
     public PetController(Shelter<Pet> shelter, PetView view) {
         this.shelter = shelter;
         this.view = view;
@@ -22,6 +25,9 @@ public class PetController {
         setupEventHandlers();
     }
 
+    /*
+     * combines the listeners and handle methods
+     */
     private void setupEventHandlers() { 
     	
     	view.setPetList(shelter.getAllPets());
@@ -32,11 +38,18 @@ public class PetController {
         view.setSaveListener(this::handleSavePets);
     
    }
+    
+    /*
+     * add pet for both methods
+     */
     private void handleAddPet(Pet pet) {
         shelter.addPet(pet);
         view.setPetList(shelter.getAllPets());
     }
 
+    /*
+     * adopt pet to be shown pre/post adoption
+     */
     private void handleAdoptPet(Pet pet) {
         if (pet == null) {
             view.showError("Please select a pet to adopt.");
@@ -51,6 +64,9 @@ public class PetController {
         view.showMessage("Pet adopted successfully!");
     }
 
+    /*
+     * removing the pet 
+     */
     private void handleRemovePet(Pet pet) {
         if (pet == null) {
             view.showError("Please select a pet to remove.");
@@ -60,6 +76,9 @@ public class PetController {
         view.setPetList(shelter.getAllPets());
     }
     
+    /*
+     * sorting the pets and calls the comparator classes
+     */
     private void handleSortPets(String sortBy) {
         Comparator<Pet> comparator;
         switch (sortBy) {
@@ -78,6 +97,9 @@ public class PetController {
         view.setPetList(shelter.getAllPets());
     }
     
+    /*
+     * saves the pet with message and new json 
+     */
     private void handleSavePets() {
         String filename = util.DateTimeUtil.getCurrentTimestamp() + " pets.json";
         try {
