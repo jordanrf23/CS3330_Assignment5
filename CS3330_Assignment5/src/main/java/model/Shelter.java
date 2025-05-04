@@ -74,6 +74,9 @@ public class Shelter<T extends Pet>{
 		pets.sort(comparator);
 	}
 	
+	/*
+	 * sort the pet on collections
+	 */
 	public void sortPets() {
 		Collections.sort(pets);
 	}
@@ -85,6 +88,9 @@ public class Shelter<T extends Pet>{
 		return new ArrayList<>(pets);
 	}
 	
+	/*
+	 * list of pets left
+	 */
 	public List<T> getAvailablePets(){
 		return pets.stream().filter(p-> !p.isAdopted()).collect(Collectors.toList());
 	}
@@ -96,6 +102,9 @@ public class Shelter<T extends Pet>{
 		pets.clear();
 	}
 	
+	/*
+	 * next id given both exotic and pet
+	 */
 	public String generateNextId() {
 		int maxId = 0;
 	    for (Pet pet : pets) {
