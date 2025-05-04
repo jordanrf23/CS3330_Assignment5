@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -29,6 +30,7 @@ import model.Shelter;
 
 public class PetView  extends JFrame{
 	
+	private static final long serialVersionUID = 1L;
 	private JButton addButton = new JButton("Add Pet");
 	private JButton adoptButton = new JButton("Adopt Pet");
 	private JButton removeButton = new JButton("Remove Pet");
@@ -42,6 +44,8 @@ public class PetView  extends JFrame{
 	private Consumer<Pet> addPetListener;
 	private Consumer<String> sortListener;
 	private Runnable saveListener;
+	
+	private List<Pet> currentPets = new ArrayList<>();
 	
 	public PetView() {
 		setTitle("Adopt Me! - Online Adoption Center");
@@ -170,6 +174,7 @@ public class PetView  extends JFrame{
 	
 	public void setPetList(List<Pet> pets) {
 	    tableModel.setRowCount(0);
+	    currentPets = new ArrayList<>(pets);
 	    for (Pet pet : pets) {
 	        tableModel.addRow(new Object[]{
 	                pet.getName(),
@@ -198,10 +203,7 @@ public class PetView  extends JFrame{
 	public Pet getSelectedPet() {
         int row = petTable.getSelectedRow();
         if (row == -1) return null;
-        String name = (String) tableModel.getValueAt(row, 0);
-        int age = Integer.parseInt(tableModel.getValueAt(row, 1).toString());
-        String species = (String) tableModel.getValueAt(row, 2);
-        return null;
+        return currentPets.get(row);
     }
 
 }

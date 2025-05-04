@@ -1,0 +1,10 @@
+[
+  {
+    "id": 4,
+    "name": "milo",
+    "type": "Dog",
+    "species": "Dog",
+    "age": 4,
+    "adopted": true
+  }
+]

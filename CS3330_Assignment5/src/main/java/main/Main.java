@@ -21,7 +21,7 @@ public class Main {
 		                // Load pets from JSON files
 		                List<Pet> pets = new ArrayList<>();
 		                pets.addAll(PetLoader.loadPets(new File(Main.class.getResource("/pets.json").getFile())));
-		                pets.addAll(PetLoader.loadExoticPets(new File(Main.class.getResource("/exotic_pets.json").getFile())));
+		                pets.addAll(PetLoader.loadExoticPets(new File(Main.class.getResource("/exotic_animals.json").getFile())));
 
 		                // Create model, view, and controller
 		                Shelter<Pet> shelter = new Shelter<>();

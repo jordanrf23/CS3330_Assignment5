@@ -59,6 +59,7 @@ public class PetController {
         shelter.removePet(pet);
         view.setPetList(shelter.getAllPets());
     }
+    
     private void handleSortPets(String sortBy) {
         Comparator<Pet> comparator;
         switch (sortBy) {
