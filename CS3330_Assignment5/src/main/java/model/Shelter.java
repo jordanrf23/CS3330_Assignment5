@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.swing.JOptionPane;
+
 public class Shelter<T extends Pet>{
 	private final List<T> pets;
 	
@@ -22,6 +24,10 @@ public class Shelter<T extends Pet>{
 	public void addPet(T pet) {
 		pets.add(pet);
 	}
+	
+	 public void removePet(T pet) {
+	        pets.remove(pet);
+	    }
 	
 	/*
 	 * removes pet by using their id 
@@ -45,12 +51,12 @@ public class Shelter<T extends Pet>{
 	/*
 	 * marks pet as adopted if not already
 	 */
-	public boolean adpotPet(int id) {
-		T pet = getPetById(id);
-		if(pet != null && !pet.isAdopted()) {
-			pet.adopt();
-			return true;
-		}
+	public boolean adpotPet(Pet pet) {
+		if (pet.isAdopted()) {
+            JOptionPane.showInputDialog("Already adopted!");
+        } else {
+            pet.setAdopted(true);
+        }
 		return false;
 	}
 	

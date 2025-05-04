@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentListener;
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -15,7 +16,10 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import model.Cat;
 import model.Dog;
@@ -25,114 +29,179 @@ import model.Shelter;
 
 public class PetView  extends JFrame{
 	
-	private final DefaultListModel<String> petListModel = new DefaultListModel<>();
-	private final JList<String> petJList = new JList<>(petListModel);
-	private final JButton addButton = new JButton("Add Pet");
-	private final JButton adoptButton = new JButton("Adopt Pet");
-	private final JButton removeButton = new JButton("Remove Pet");
-	private final JButton saveButton = new JButton("Save Pet");
-	private final JComboBox<String> sortComboBox = new JComboBox<>(new String[] {"Name", "Age", "Species"});
-
+	private JButton addButton = new JButton("Add Pet");
+	private JButton adoptButton = new JButton("Adopt Pet");
+	private JButton removeButton = new JButton("Remove Pet");
+	private JButton saveButton = new JButton("Save Pet");
+	private JComboBox<String> sortComboBox = new JComboBox<>(new String[] {"Name", "Age", "Species"});
+	private JTable petTable;
+	private DefaultTableModel tableModel;
+	
+	private Consumer<Pet> adoptPetListener;
+	private Consumer<Pet> removePetListener;
+	private Consumer<Pet> addPetListener;
+	private Consumer<String> sortListener;
+	private Runnable saveListener;
+	
 	public PetView() {
 		setTitle("Adopt Me! - Online Adoption Center");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(600, 400);
-		getContentPane().setLayout(new BorderLayout());
-		
-		JScrollPane scrollPane = new JScrollPane();
-		getContentPane().add(scrollPane, BorderLayout.CENTER);
-		
-		JPanel controls = new JPanel();
-		controls.add(addButton);
-		controls.add(adoptButton);
-		controls.add(removeButton);
-		controls.add(new JLabel("Sort By"));
-		controls.add(sortComboBox);
-		controls.add(saveButton);
-		add(controls, BorderLayout.SOUTH);
-		
 		setLocationRelativeTo(null);
 		setVisible(true);
+		initComponents();
 	}
 	
-	public void setAddPetListener(ActionListener listener) {
-		addButton.addActionListener(listener);
-	}
-	
-	public void setAdoptPetListener(ActionListener listener) {
-		adoptButton.addActionListener(listener);
-	}
-	
-	public void setRemovePetListener(ActionListener listener) {
-		removeButton.addActionListener(listener);
-	}
-	
-	public void setSaveListener(ActionListener listener) {
-		saveButton.addActionListener(listener);
-	}
-	
-	public void setSortListener(ActionListener listener) {
-		sortComboBox.addActionListener(listener);
-	}
-	
-	public void updatePetList(List<Pet> pets) {
-		petListModel.clear();
-		for(Pet pet : pets) {
-			petListModel.addElement(pet.toString());
-		}
-	}
-	
-	public int getSelectedPetId() {
-		int index = petJList.getSelectedIndex();
-		return index >= 0 ? index : -1;
-	}
-	
-	public Pet promptNewPet() {
-		JTextField nameField = new JTextField();
-	    JTextField ageField = new JTextField();
-	    JTextField breedField = new JTextField();
-	    String[] speciesOptions = {"Dog", "Cat", "Rabbit"};
-	    JComboBox<String> speciesCombo = new JComboBox<>(speciesOptions);
+	private void initComponents() {
+		tableModel = new DefaultTableModel(new Object[] {"Name", "Age", "Species", "Adopted"}, 0) {
+			private static final long serialVersionUID = 1L;
+			@Override
+	        public boolean isCellEditable(int row, int column) { return false; }
+	    };
+	    petTable = new JTable(tableModel);
+	    JScrollPane tableScroll = new JScrollPane(petTable);
+	    
+	    addButton = new JButton("Add");
+        adoptButton = new JButton("Adopt");
+        removeButton = new JButton("Remove");
+        saveButton = new JButton("Save");
+        
+        sortComboBox = new JComboBox<>(new String[] {"Name", "Age", "Species"});
+        
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(addButton);
+        buttonPanel.add(adoptButton);
+        buttonPanel.add(removeButton);
+        buttonPanel.add(saveButton);
+        buttonPanel.add(new JLabel("Sort by:"));
+        buttonPanel.add(sortComboBox);
+        
+        setLayout(new BorderLayout());
+        add(tableScroll, BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.SOUTH);
+        
+        addButton.addActionListener(e -> {
+            JTextField nameField = new JTextField();
+            JTextField ageField = new JTextField();
+            JComboBox<String> speciesBox = new JComboBox<>(new String[]{"Dog", "Cat", "Rabbit"});
 
-	    JPanel panel = new JPanel(new GridLayout(0, 1));
-	    panel.add(new JLabel("Name:"));
-	    panel.add(nameField);
-	    panel.add(new JLabel("Age:"));
-	    panel.add(ageField);
-	    panel.add(new JLabel("Breed:"));
-	    panel.add(breedField);
-	    panel.add(new JLabel("Species:"));
-	    panel.add(speciesCombo);
+            JPanel panel = new JPanel(new GridLayout(0, 1));
+            panel.add(new JLabel("Name:"));
+            panel.add(nameField);
+            panel.add(new JLabel("Age:"));
+            panel.add(ageField);
+            panel.add(new JLabel("Species:"));
+            panel.add(speciesBox);
 
-	    int result = JOptionPane.showConfirmDialog(this, panel, "Add New Pet",
-	            JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            int result = JOptionPane.showConfirmDialog(
+                this, panel, "Add Pet", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
+            );
 
-	    if (result == JOptionPane.OK_OPTION) {
-	        try {
-	            String name = nameField.getText().trim();
-	            int age = Integer.parseInt(ageField.getText().trim());
-	            String breed = breedField.getText().trim();
-	            String species = (String) speciesCombo.getSelectedItem();
-	            int id = Shelter.getNextId();
+            if (result == JOptionPane.OK_OPTION) {
+                String name = nameField.getText().trim();
+                String ageText = ageField.getText().trim();
+                String species = (String) speciesBox.getSelectedItem();
 
-	            switch (species) {
-	                case "Dog":
-	                    return new Dog(id, name, age, false, breed);
-	                case "Cat":
-	                    return new Cat(id, name, age, false, breed);
-	                case "Rabbit":
-	                    return new Rabbit(id, name, age, false, breed);
-	                default:
-	                    showMessage("Unsupported species.");
-	            }
-	        } catch (Exception e) {
-	            showMessage("Invalid input. Please check age and name fields.");
-	        }
+                // Basic validation
+                if (name.isEmpty() || ageText.isEmpty()) {
+                    showError("Name and age must not be empty.");
+                    return;
+                }
+
+                int age;
+                try {
+                    age = Integer.parseInt(ageText);
+                    if (age < 0) throw new NumberFormatException();
+                } catch (NumberFormatException ex) {
+                    showError("Age must be a positive integer.");
+                    return;
+                }
+
+                // Create the Pet object according to species
+                Pet pet = null;
+                if ("Dog".equals(species)) {
+                    pet = new model.Dog(age, name, age, rootPaneCheckingEnabled, species);
+                } else if ("Cat".equals(species)) {
+                    pet = new model.Cat(age, name, age, rootPaneCheckingEnabled, species);
+                } else if ("Rabbit".equals(species)) {
+                    pet = new model.Rabbit(age, name, age, rootPaneCheckingEnabled, species);
+                }
+                if (pet != null && addPetListener != null) {
+                    addPetListener.accept(pet);
+                }
+            }
+        });
+        adoptButton.addActionListener(e -> {
+            Pet selected = getSelectedPet();
+            if (adoptPetListener != null && selected != null) adoptPetListener.accept(selected);
+        });
+        removeButton.addActionListener(e -> {
+            Pet selected = getSelectedPet();
+            if (removePetListener != null && selected != null) removePetListener.accept(selected);
+        });
+        saveButton.addActionListener(e -> {
+            if (saveListener != null) saveListener.run();
+        });
+        sortComboBox.addActionListener(e -> {
+            if (sortListener != null) sortListener.accept((String) sortComboBox.getSelectedItem());
+        });
+
+	}
+
+	public void setAddPetListener(Consumer<Pet> listener) {
+		this.addPetListener = listener;
+	}
+	
+	public void setAdoptPetListener(Consumer<Pet> listener) {
+		this.adoptPetListener = listener;
+	}
+	
+	public void setRemovePetListener(Consumer<Pet> listener) {
+		this.removePetListener = listener;
+	}
+	
+	public void setSaveListener(Runnable listener) {
+		this.saveListener = listener;
+	}
+	
+	public void setSortListener(Consumer<String> listener) {
+		this.sortListener = listener;
+	}
+	
+	public void setPetList(List<Pet> pets) {
+	    tableModel.setRowCount(0);
+	    for (Pet pet : pets) {
+	        tableModel.addRow(new Object[]{
+	                pet.getName(),
+	                pet.getAge(),
+	                pet.getspecies(),
+	                pet.isAdopted() ? "Yes" : "No"
+	        });
 	    }
-	    return null;
+	}
+	public void showPetDetails(Pet pet) {
+        String message = String.format(
+                "Name: %s\nAge: %d\nSpecies: %s\nAdopted: %s",
+                pet.getName(), pet.getAge(), pet.getspecies(), pet.isAdopted() ? "Yes" : "No"
+        );
+        JOptionPane.showMessageDialog(this, message, "Pet Details", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public void showMessage(String message) {
-        JOptionPane.showMessageDialog(this, message);
-	}
+	public void showError(String message) {
+        JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+	public void showMessage(String message) {
+        JOptionPane.showMessageDialog(this, message, "Info", JOptionPane.INFORMATION_MESSAGE);
+    }
+	
+	public Pet getSelectedPet() {
+        int row = petTable.getSelectedRow();
+        if (row == -1) return null;
+        String name = (String) tableModel.getValueAt(row, 0);
+        int age = Integer.parseInt(tableModel.getValueAt(row, 1).toString());
+        String species = (String) tableModel.getValueAt(row, 2);
+        return null;
+    }
+
 }
