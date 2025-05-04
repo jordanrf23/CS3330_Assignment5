@@ -1,16 +1,10 @@
 package controller;
 
 import java.io.File;
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Comparator;
-import java.util.List;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import model.ExoticAnimal;
-import model.ExoticAnimalAdapter;
 import model.Pet;
 import model.Shelter;
 import util.JsonUtil;
@@ -20,7 +14,6 @@ public class PetController {
 	
 	private final Shelter<Pet> shelter;
     private final PetView view;
-    private final Gson gson = new Gson();
 
     public PetController(Shelter<Pet> shelter, PetView view) {
         this.shelter = shelter;
