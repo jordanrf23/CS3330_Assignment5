@@ -52,7 +52,7 @@ public class PetView  extends JFrame{
 	}
 	
 	private void initComponents() {
-		tableModel = new DefaultTableModel(new Object[] {"Name", "Age", "Species", "Adopted"}, 0) {
+		tableModel = new DefaultTableModel(new Object[] {"ID", "Name", "Age", "Species", "Adopted"}, 0) {
 			private static final long serialVersionUID = 1L;
 			@Override
 	        public boolean isCellEditable(int row, int column) { return false; }
@@ -79,7 +79,9 @@ public class PetView  extends JFrame{
         add(tableScroll, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
         
-        addButton.addActionListener(e -> {
+        JButton jButton = new JButton();
+		JButton jButton2 = new JButton();
+		jButton2.addActionListener(e -> {
             JTextField nameField = new JTextField();
             JTextField ageField = new JTextField();
             JComboBox<String> speciesBox = new JComboBox<>(new String[]{"Dog", "Cat", "Rabbit"});
@@ -115,15 +117,19 @@ public class PetView  extends JFrame{
                     showError("Age must be a positive integer.");
                     return;
                 }
+                
+                Shelter<Pet> shelter = new Shelter<>();
+                int id = shelter.generateNextId();
+                boolean adopted = false;
 
                 // Create the Pet object according to species
                 Pet pet = null;
                 if ("Dog".equals(species)) {
-                    pet = new model.Dog(age, name, age, rootPaneCheckingEnabled, species);
+                    pet = new model.Dog(id, name, "Dog", species, age, adopted);
                 } else if ("Cat".equals(species)) {
-                    pet = new model.Cat(age, name, age, rootPaneCheckingEnabled, species);
+                    pet = new model.Cat(id, name, "Cat", species, age, adopted);
                 } else if ("Rabbit".equals(species)) {
-                    pet = new model.Rabbit(age, name, age, rootPaneCheckingEnabled, species);
+                    pet = new model.Rabbit(id, name,"Rabbit", species, age, adopted);
                 }
                 if (pet != null && addPetListener != null) {
                     addPetListener.accept(pet);
@@ -172,6 +178,7 @@ public class PetView  extends JFrame{
 	    currentPets = new ArrayList<>(pets);
 	    for (Pet pet : pets) {
 	        tableModel.addRow(new Object[]{
+	        		pet.getId(),
 	                pet.getName(),
 	                pet.getAge(),
 	                pet.getspecies(),

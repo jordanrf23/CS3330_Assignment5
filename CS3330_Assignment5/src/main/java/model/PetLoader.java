@@ -27,19 +27,23 @@ public class PetLoader {
             JsonArray jsonArray = JsonParser.parseReader(reader).getAsJsonArray();
             for (JsonElement element : jsonArray) {
                 JsonObject obj = element.getAsJsonObject();
+                int id = obj.get("id").getAsInt();
                 String species = obj.get("species").getAsString();
+                String type = obj.get("type").getAsString();
                 String name = obj.get("name").getAsString();
                 int age = obj.get("age").getAsInt();
+                boolean adopted = obj.has("adopted") && obj.get("adopted").getAsBoolean();
 
-                switch (species.toLowerCase()) {
+
+                switch (type.toLowerCase()) {
                     case "dog":
-                        pets.add(new Dog(age, name, age, false, name));
+                        pets.add(new Dog(id, name, "Dog", species, age, adopted));
                         break;
                     case "cat":
-                        pets.add(new Cat(age, name, age, false, name));
+                        pets.add(new Cat(id, name, "Cat", species, age, adopted));
                         break;
                     case "rabbit":
-                        pets.add(new Rabbit(age, name, age, false, name));
+                        pets.add(new Rabbit(id, name, "Rabbit", species, age, adopted));
                         break;
                     default:
                         // Unknown species, can log or skip
@@ -49,6 +53,7 @@ public class PetLoader {
         }
         return pets;
     }
+	
 	public static List<Pet> loadExoticPets(File file) throws IOException {
         List<Pet> pets = new ArrayList<>();
         try (Reader reader = new FileReader(file)) {

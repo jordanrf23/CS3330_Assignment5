@@ -95,4 +95,14 @@ public class Shelter<T extends Pet>{
 	public void clear() {
 		pets.clear();
 	}
+	
+	public int generateNextId() {
+	    int maxId = 0;
+	    for (Pet pet : pets) { // assuming pets is your List<Pet>
+	        if (pet.getId() > maxId) {
+	            maxId = pet.getId();
+	        }
+	    }
+	    return maxId + 1;
+	}
 }

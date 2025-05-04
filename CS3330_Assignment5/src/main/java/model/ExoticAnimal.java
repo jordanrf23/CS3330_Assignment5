@@ -1,21 +1,21 @@
 package model;
 
 public class ExoticAnimal {
-	private String uniqueName;
+	private String animalName;
 	private int yearsOld;
 	private String animalType;
 	private boolean isAdopted;
 	
-	public ExoticAnimal(String uniqueName, int yearsOld, String animalType, boolean isAdopted) {
+	public ExoticAnimal(String animalName, int yearsOld, String animalType, boolean isAdopted) {
 		super();
-		this.uniqueName = uniqueName;
+		this.animalName = animalName;
 		this.yearsOld = yearsOld;
 		this.animalType = animalType;
 		this.isAdopted = isAdopted;
 	}
 
-	public String getUniqueName() {
-		return uniqueName;
+	public String getAnimalName() {
+		return animalName;
 	}
 
 	public int getYearsOld() {

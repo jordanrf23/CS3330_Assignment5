@@ -1,0 +1,32 @@
+[
+  {
+    "exoticAnimal": {
+      "yearsOld": 4,
+      "isAdopted": false
+    },
+    "id": 0,
+    "species": "Exotic",
+    "age": 4,
+    "adopted": false
+  },
+  {
+    "exoticAnimal": {
+      "yearsOld": 6,
+      "isAdopted": false
+    },
+    "id": 0,
+    "species": "Exotic",
+    "age": 6,
+    "adopted": false
+  },
+  {
+    "exoticAnimal": {
+      "yearsOld": 2,
+      "isAdopted": false
+    },
+    "id": 0,
+    "species": "Exotic",
+    "age": 2,
+    "adopted": false
+  }
+]

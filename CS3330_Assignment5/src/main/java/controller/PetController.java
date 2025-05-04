@@ -87,8 +87,5 @@ public class PetController {
             view.showError("Failed to save pets: " + e.getMessage());
         }
     }
-    
-
-
    
 }
