@@ -23,6 +23,7 @@ import model.Shelter;
 
 public class PetView  extends JFrame{
 	
+	// all the button for the user to use
 	private static final long serialVersionUID = 1L;
 	private JButton addButton = new JButton("Add Pet");
 	private JButton adoptButton = new JButton("Adopt Pet");
@@ -32,6 +33,7 @@ public class PetView  extends JFrame{
 	private JTable petTable;
 	private DefaultTableModel tableModel;
 	
+	//Initialization for the listeners
 	private Consumer<Pet> adoptPetListener;
 	private Consumer<Pet> removePetListener;
 	private Consumer<Pet> addPetListener;
@@ -40,6 +42,9 @@ public class PetView  extends JFrame{
 	
 	private List<Pet> currentPets = new ArrayList<>();
 	
+	/*
+	 * title for the window
+	 */
 	public PetView() {
 		setTitle("Adopt Me! - Online Adoption Center");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -49,6 +54,9 @@ public class PetView  extends JFrame{
 		initComponents();
 	}
 	
+	/*
+	 * addition of the buttons and all the listeners to react to a users mouse
+	 */
 	private void initComponents() {
 		tableModel = new DefaultTableModel(new Object[] {"ID", "Name", "Age", "Species", "Adopted"}, 0) {
 			private static final long serialVersionUID = 1L;
@@ -149,26 +157,44 @@ public class PetView  extends JFrame{
 
 	}
 
+	/*
+	 * add button listener 
+	 */
 	public void setAddPetListener(Consumer<Pet> listener) {
 		this.addPetListener = listener;
 	}
 	
+	/*
+	 * adopt button listener
+	 */
 	public void setAdoptPetListener(Consumer<Pet> listener) {
 		this.adoptPetListener = listener;
 	}
 	
+	/*
+	 * remove button listener
+	 */
 	public void setRemovePetListener(Consumer<Pet> listener) {
 		this.removePetListener = listener;
 	}
 	
+	/*
+	 * save button listener
+	 */
 	public void setSaveListener(Runnable listener) {
 		this.saveListener = listener;
 	}
 	
+	/*
+	 * sort button listener
+	 */
 	public void setSortListener(Consumer<String> listener) {
 		this.sortListener = listener;
 	}
 	
+	/*
+	 * list for the animals in table format
+	 */
 	public void setPetList(List<Pet> pets) {
 	    tableModel.setRowCount(0);
 	    currentPets = new ArrayList<>(pets);
@@ -182,6 +208,10 @@ public class PetView  extends JFrame{
 	        });
 	    }
 	}
+	
+	/*
+	 * showing the pet 
+	 */
 	public void showPetDetails(Pet pet) {
         String message = String.format(
                 "Name: %s\nAge: %d\nSpecies: %s\nAdopted: %s",
@@ -190,14 +220,23 @@ public class PetView  extends JFrame{
         JOptionPane.showMessageDialog(this, message, "Pet Details", JOptionPane.INFORMATION_MESSAGE);
     }
 
+	/*
+	 * error message
+	 */
 	public void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
+	/*
+	 * info message
+	 */
 	public void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "Info", JOptionPane.INFORMATION_MESSAGE);
     }
 	
+	/*
+	 * pet selection 
+	 */
 	public Pet getSelectedPet() {
 	    int row = petTable.getSelectedRow();
 	    if (row == -1) return null;
